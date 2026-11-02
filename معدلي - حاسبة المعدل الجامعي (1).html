@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>معدلي</title>
+<style>
+:root{--bg:#f2f2f7;--card:#fff;--text:#000;--sub:#8e8e93;--blue:#007aff;--sep:rgba(60,60,67,.16);--green:#34c759;--red:#ff3b30;--fill:rgba(118,118,128,.12);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--card:#1c1c1e;--text:#fff;--sub:#98989f;--blue:#0a84ff;--sep:rgba(84,84,88,.5);--green:#30d158;--red:#ff453a;--fill:rgba(118,118,128,.24)}}
+:root[data-theme="dark"]{--bg:#000;--card:#1c1c1e;--text:#fff;--sub:#98989f;--blue:#0a84ff;--sep:rgba(84,84,88,.5);--green:#30d158;--red:#ff453a;--fill:rgba(118,118,128,.24)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,"SF Arabic","SF Pro Text",system-ui,"Segoe UI",Tahoma,sans-serif}
+body{max-width:520px;margin:0 auto;padding:0 16px calc(90px + env(safe-area-inset-bottom,0px))}
+h1{font-size:32px;margin:18px 4px 14px;font-weight:700}
+h2{font-size:13px;color:var(--sub);font-weight:500;margin:20px 12px 6px}
+.screen{display:none}.screen.on{display:block}
+.card{background:var(--card);border-radius:12px;overflow:hidden}
+.row{display:flex;align-items:center;gap:10px;padding:11px 14px;min-height:46px;border-bottom:.5px solid var(--sep)}
+.row:last-child{border-bottom:0}
+.row label{flex:1;font-size:16px}
+input,select{font:inherit;color:var(--text);background:var(--fill);border:0;border-radius:8px;padding:8px 10px;min-width:0;text-align:center}
+input[type=text],input[type=date]{text-align:right}
+input:focus,select:focus{outline:2px solid var(--blue)}
+.seg{display:flex;background:var(--fill);border-radius:9px;padding:2px}
+.seg button{flex:1;border:0;background:none;color:var(--text);font:inherit;font-size:14px;font-weight:500;padding:7px;border-radius:7px}
+.seg button.on{background:var(--card);box-shadow:0 1px 4px rgba(0,0,0,.18)}
+.btn{display:block;width:100%;border:0;border-radius:12px;background:var(--blue);color:#fff;font:inherit;font-weight:600;font-size:17px;padding:14px;margin-top:16px}
+.btn:active{opacity:.7}
+.link{border:0;background:none;color:var(--blue);font:inherit;font-size:16px;padding:12px 14px;width:100%;text-align:right}
+.del{border:0;background:none;color:var(--red);font-size:20px;padding:0 4px}
+.c{width:62px}.cs{flex:1}
+.res{display:flex;text-align:center;padding:18px 8px}
+.res div{flex:1}.res b{display:block;font-size:38px;font-weight:700;color:var(--blue)}.res span{font-size:13px;color:var(--sub)}
+.res+.res{border-top:.5px solid var(--sep)}
+.task{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:.5px solid var(--sep)}
+.task:last-child{border-bottom:0}
+.chk{width:24px;height:24px;border-radius:50%;border:2px solid var(--sub);background:none;flex:none;padding:0;color:#fff;font-size:14px}
+.task.done .chk{background:var(--green);border-color:var(--green)}
+.task.done .t{text-decoration:line-through;color:var(--sub)}
+.t{flex:1;min-width:0}.t small{display:block;color:var(--sub);font-size:13px}
+.tag{font-size:12px;border-radius:6px;padding:2px 7px;background:var(--fill)}
+.tag.late{color:var(--red)}
+.empty{text-align:center;color:var(--sub);padding:28px 14px}
+.msg{padding:16px;font-size:16px;line-height:1.6}
+.msg b{color:var(--blue);font-size:22px}
+.bar{height:6px;border-radius:3px;background:var(--fill);margin-top:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--blue)}
+.tips div{padding:11px 14px;border-bottom:.5px solid var(--sep);font-size:15px;line-height:1.55}
+.tips div:last-child{border-bottom:0}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:center;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:.5px solid var(--sep);padding:6px 0 calc(6px + env(safe-area-inset-bottom,0px));z-index:5}
+nav div{display:flex;width:100%;max-width:520px}
+nav button{flex:1;border:0;background:none;color:var(--sub);font:inherit;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px}
+nav button.on{color:var(--blue)}
+nav svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+</style>
+</head>
+<body>
+
+<section class="screen on" id="s0">
+<h1>حاسبة المعدل</h1>
+<div class="seg" id="sys"><button data-v="5">من 5.00</button><button data-v="4">من 4.00</button></div>
+<h2>المعدل التراكمي السابق (اختياري)</h2>
+<div class="card">
+<div class="row"><label>المعدل التراكمي</label><input class="c" id="pg" type="number" inputmode="decimal" step="0.01" placeholder="0.00"></div>
+<div class="row"><label>الساعات المنجزة</label><input class="c" id="ph" type="number" inputmode="numeric" placeholder="0"></div>
+</div>
+<h2>مواد الفصل</h2>
+<div class="card" id="courses"></div>
+<div class="card" style="margin-top:12px"><button class="link" id="addC">+ إضافة مادة</button></div>
+<button class="btn" id="calc">احسب</button>
+<div id="out"></div>
+</section>
+
+<section class="screen" id="s1">
+<h1>التكليفات</h1>
+<div class="card">
+<div class="row"><input class="cs" id="tn" type="text" placeholder="اسم المادة"></div>
+<div class="row"><label>النوع</label><select id="tt"><option>تكليف</option><option>اختبار</option><option>كويز</option><option>مشروع</option></select></div>
+<div class="row"><label>تاريخ التسليم</label><input id="td" type="date"></div>
+</div>
+<button class="btn" id="addT">إضافة</button>
+<h2 id="tcount"></h2>
+<div class="card" id="tasks"></div>
+</section>
+
+<section class="screen" id="s2">
+<h1>أدوات مساعدة</h1>
+<h2>كم أحتاج في الفاينل؟</h2>
+<div class="card">
+<div class="row"><label>وزن الفاينل (من 100)</label><input class="c" id="fw" type="number" inputmode="decimal" value="40"></div>
+<div class="row"><label>درجاتي الحالية <span id="fmax" style="color:var(--sub)"></span></label><input class="c" id="fc" type="number" inputmode="decimal" placeholder="0"></div>
+<div class="row"><label>الدرجة المطلوبة</label><select id="ft"><option value="95">A+ (95)</option><option value="90" selected>A (90)</option><option value="85">B+ (85)</option><option value="80">B (80)</option><option value="75">C+ (75)</option><option value="70">C (70)</option><option value="65">D+ (65)</option><option value="60">D (60)</option></select></div>
+</div>
+<button class="btn" id="fgo">احسب المطلوب</button>
+<div id="fout"></div>
+<h2>توزيع ساعات المذاكرة</h2>
+<div class="card"><div class="row"><label>ساعاتي المتاحة أسبوعياً</label><input class="c" id="wh" type="number" inputmode="numeric" value="20"></div></div>
+<div class="card" id="plan" style="margin-top:12px"></div>
+<h2>نصائح</h2>
+<div class="card tips">
+<div>ذاكر لكل ساعة معتمدة ساعتين أسبوعياً تقريباً، وزد على المواد الأصعب.</div>
+<div>قسّم المذاكرة إلى جلسات من 45 دقيقة بينها راحة قصيرة.</div>
+<div>ابدأ المراجعة قبل الاختبار بأسبوع على الأقل، وراجع الأخطاء السابقة.</div>
+<div>خصص ساعة ثابتة أسبوعياً لتحديث قائمة التكليفات.</div>
+</div>
+</section>
+
+<nav><div>
+<button data-t="0" class="on"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8.5 7.5h7M8.5 12h1M12 12h1M15.5 12h0M8.5 16h1M12 16h1M15.5 16h0"/></svg>المعدل</button>
+<button data-t="1"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16 9.5"/></svg>التكليفات</button>
+<button data-t="2"><svg viewBox="0 0 24 24"><path d="M14.5 6.5a4 4 0 0 0 4.8 4.8L10 20.6a2 2 0 0 1-2.8-2.8l9.3-9.3a4 4 0 0 1-2-2z"/><path d="M5 5l3 3"/></svg>أدوات</button>
+</div></nav>
+
+<script>
+var SC={5:{'A+':5,'A':4.75,'B+':4.5,'B':4,'C+':3.5,'C':3,'D+':2.5,'D':2,'F':1},4:{'A+':4,'A':3.75,'B+':3.5,'B':3,'C+':2.5,'C':2,'D+':1.5,'D':1,'F':0}};
+var S={sys:5,pg:'',ph:'',courses:[{n:'',h:3,g:'A'},{n:'',h:3,g:'B+'},{n:'',h:2,g:'A'}],tasks:[]};
+try{var raw=localStorage.getItem('gpa-app');if(raw){S=Object.assign(S,JSON.parse(raw))}}catch(e){}
+function save(){try{localStorage.setItem('gpa-app',JSON.stringify(S))}catch(e){}}
+var $=function(i){return document.getElementById(i)};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+/* tabs */
+function show(i){
+  document.querySelectorAll('.screen').forEach(function(s,k){s.classList.toggle('on',k==i)});
+  document.querySelectorAll('nav button').forEach(function(b,k){b.classList.toggle('on',k==i)});
+  if(i==2)plan();window.scrollTo(0,0);
+}
+document.querySelectorAll('nav button').forEach(function(b){b.onclick=function(){show(+b.dataset.t)}});
+
+/* screen 1 */
+function segs(){document.querySelectorAll('#sys button').forEach(function(b){b.classList.toggle('on',+b.dataset.v==S.sys)})}
+document.querySelectorAll('#sys button').forEach(function(b){b.onclick=function(){S.sys=+b.dataset.v;segs();drawC();$('out').innerHTML='';save()}});
+$('pg').value=S.pg;$('ph').value=S.ph;
+$('pg').oninput=function(){S.pg=this.value;save()};$('ph').oninput=function(){S.ph=this.value;save()};
+function drawC(){
+  var gs=Object.keys(SC[S.sys]);
+  $('courses').innerHTML=S.courses.map(function(c,i){
+    return '<div class="row"><input class="cs" type="text" placeholder="المادة '+(i+1)+'" value="'+esc(c.n)+'" data-i="'+i+'" data-k="n">'+
+    '<input class="c" style="width:54px" type="number" inputmode="numeric" min="1" max="9" value="'+c.h+'" data-i="'+i+'" data-k="h">'+
+    '<select data-i="'+i+'" data-k="g">'+gs.map(function(g){return '<option'+(g==c.g?' selected':'')+'>'+g+'</option>'}).join('')+'</select>'+
+    '<button class="del" data-d="'+i+'" aria-label="حذف">&minus;</button></div>';
+  }).join('');
+  S.courses.forEach(function(c){if(!SC[S.sys][c.g])c.g='A'});
+  $('courses').querySelectorAll('[data-k]').forEach(function(e){e.oninput=e.onchange=function(){S.courses[+e.dataset.i][e.dataset.k]=e.dataset.k=='h'?(+e.value||0):e.value;save()}});
+  $('courses').querySelectorAll('[data-d]').forEach(function(b){b.onclick=function(){S.courses.splice(+b.dataset.d,1);drawC();save()}});
+}
+$('addC').onclick=function(){S.courses.push({n:'',h:3,g:'A'});drawC();save()};
+$('calc').onclick=function(){
+  var th=0,tp=0;
+  S.courses.forEach(function(c){th+=c.h;tp+=c.h*SC[S.sys][c.g]});
+  if(!th){$('out').innerHTML='<div class="card" style="margin-top:16px"><div class="empty">أضف مادة بساعات معتمدة أولاً</div></div>';return}
+  var sem=tp/th,pg=parseFloat(S.pg),ph=parseFloat(S.ph),cum=null;
+  if(pg>0&&ph>0)cum=(pg*ph+tp)/(ph+th);
+  $('out').innerHTML='<h2>النتيجة</h2><div class="card"><div class="res"><div><b>'+sem.toFixed(2)+'</b><span>المعدل الفصلي</span></div>'+
+   (cum!==null?'<div><b>'+cum.toFixed(2)+'</b><span>التراكمي المتوقع</span></div>':'')+'</div>'+
+   '<div class="row"><label>ساعات الفصل</label><span>'+th+'</span></div></div>'+
+   (cum===null?'<h2>أدخل معدلك التراكمي وساعاتك السابقة لعرض التراكمي المتوقع</h2>':'');
+  $('out').scrollIntoView({behavior:'smooth',block:'nearest'});
+};
+
+/* screen 2 */
+function days(d){var t=new Date();t.setHours(0,0,0,0);return Math.round((new Date(d+'T00:00:00')-t)/864e5)}
+function drawT(){
+  var list=S.tasks.map(function(t,i){return{t:t,i:i}}).sort(function(a,b){return (a.t.done-b.t.done)||(a.t.d>b.t.d?1:-1)});
+  var left=S.tasks.filter(function(t){return!t.done}).length;
+  $('tcount').textContent=S.tasks.length?('المتبقي: '+left+' من '+S.tasks.length):'';
+  $('tasks').innerHTML=list.length?list.map(function(o){
+    var t=o.t,n=days(t.d),lab=n<0?'متأخر':n==0?'اليوم':n==1?'غداً':'بعد '+n+' يوم';
+    return '<div class="task'+(t.done?' done':'')+'"><button class="chk" data-c="'+o.i+'">'+(t.done?'&#10003;':'')+'</button><div class="t">'+esc(t.n)+'<small>'+t.k+' · '+t.d+'</small></div>'+
+    (t.done?'':'<span class="tag'+(n<0?' late':'')+'">'+lab+'</span>')+'<button class="del" data-x="'+o.i+'" aria-label="حذف">&times;</button></div>';
+  }).join(''):'<div class="empty">لا توجد مهام بعد</div>';
+  $('tasks').querySelectorAll('[data-c]').forEach(function(b){b.onclick=function(){var t=S.tasks[+b.dataset.c];t.done=!t.done;drawT();save()}});
+  $('tasks').querySelectorAll('[data-x]').forEach(function(b){b.onclick=function(){S.tasks.splice(+b.dataset.x,1);drawT();save()}});
+}
+$('addT').onclick=function(){
+  var n=$('tn').value.trim(),d=$('td').value;
+  if(!n||!d){(!n?$('tn'):$('td')).focus();return}
+  S.tasks.push({n:n,k:$('tt').value,d:d,done:false});$('tn').value='';drawT();save();
+};
+
+/* screen 3 */
+function fmax(){var w=parseFloat($('fw').value)||0;$('fmax').textContent='(من '+(100-w)+')'}
+$('fw').oninput=fmax;
+$('fgo').onclick=function(){
+  var w=parseFloat($('fw').value),c=parseFloat($('fc').value)||0,t=+$('ft').value,m;
+  if(!(w>0&&w<=100)){m='أدخل وزن الفاينل بشكل صحيح';}
+  else{
+    var need=t-c,pct=need/w*100,g=$('ft').options[$('ft').selectedIndex].text.split(' ')[0];
+    if(need<=0)m='أبشر! درجتك الحالية تكفي للحصول على '+g+' حتى لو لم تحصل على شيء في الفاينل.';
+    else if(need>w)m='للأسف الحصول على '+g+' غير ممكن حسابياً (تحتاج '+need.toFixed(1)+' من '+w+'). جرّب هدفاً أقل.';
+    else m='تحتاج <b>'+need.toFixed(1)+'</b> من '+w+' في الفاينل<br>أي ما يعادل <b>'+pct.toFixed(1)+'%</b> للحصول على '+g+'.';
+  }
+  $('fout').innerHTML='<div class="card" style="margin-top:12px"><div class="msg">'+m+'</div></div>';
+};
+function plan(){
+  var h=parseFloat($('wh').value)||0,cs=S.courses.filter(function(c){return c.h>0}),tot=cs.reduce(function(a,c){return a+c.h},0);
+  $('plan').innerHTML=tot?cs.map(function(c,i){var x=h*c.h/tot;
+    return '<div class="row" style="display:block"><div style="display:flex;justify-content:space-between"><span>'+esc(c.n||('المادة '+(i+1)))+' ('+c.h+' س)</span><b>'+x.toFixed(1)+' ساعة</b></div><div class="bar"><i style="width:'+(c.h/tot*100)+'%"></i></div></div>'}).join(''):'<div class="empty">أضف موادك في شاشة المعدل أولاً</div>';
+}
+$('wh').oninput=plan;
+
+segs();drawC();drawT();fmax();
+</script>
+</body>
+</html>
